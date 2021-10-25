@@ -7,7 +7,7 @@
     @dragover.stop
   >
     <h2>{{ note.header }}</h2>
-    <p v-for="(item, index) in note.content" class="content" :key="index">
+    <p v-for="(item, index) in note.content" class="note__content" :key="index">
       {{ item }}
     </p>
     <button
@@ -34,7 +34,7 @@ export default {
     }) {
       e.dataTransfer.setData('sticky', JSON.stringify(this.note));
     },
-    deleteNote(id: unknown) {
+    deleteNote(id: string) {
       this.$emit('delete', id);
     },
   },
@@ -67,7 +67,7 @@ export default {
   cursor: grabbing;
   box-shadow: 4px 4px 2px grey;
 }
-.content {
+.note__content {
   word-wrap: break-word;
 }
 </style>

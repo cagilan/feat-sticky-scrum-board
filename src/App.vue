@@ -23,13 +23,12 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import InputHeader from './components/InputHeader.vue';
 import StickyBoard from './components/StickyBoard.vue';
 import Boards from './components/Boards.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Stickies } from './types/notes';
 
 export default defineComponent({
   components: { InputHeader, StickyBoard, Boards },
@@ -45,7 +44,7 @@ export default defineComponent({
     /**
      * @private
      */
-    createSticky(header: unknown, content: unknown) {
+    createSticky(header: string, content: string) {
       this.stickies.push({
         stickyId: `S${this.count + 1}`,
         header,
@@ -60,9 +59,10 @@ export default defineComponent({
     /**
      * @private
      */
-    moveSticky(data: string, col: unknown) {
+    moveSticky(data: string, col: string) {
       const noteObj = JSON.parse(data);
-      const moveNote = this.stickies.find((s) => s.stickyId === noteObj.stickyId);
+      const moveNote = this.stickies
+        .find((s: { stickyId: string; }) => s.stickyId === noteObj.stickyId);
       const newCol = col;
       moveNote.column = newCol;
       this.saveStickies();
@@ -82,13 +82,13 @@ export default defineComponent({
         board,
         stickies,
       };
-      if (!localStorage.getItem('boardData')) {
-        return localStorage.setItem('boardData', JSON.stringify([data]));
+      if (!localStorage.getItem('stickyBoardData')) {
+        return localStorage.setItem('stickyBoardData', JSON.stringify([data]));
       }
-      const savedData = JSON.parse(localStorage.getItem('boardData'));
+      const savedData = JSON.parse(localStorage.getItem('stickyBoardData'));
       let boardExists = false;
       // eslint-disable-next-line array-callback-return
-      savedData.find((boards) => {
+      savedData.find((boards: { board: string; stickies: Array<Stickies>; }) => {
         if (boards.board === this.selectedBoard) {
           // eslint-disable-next-line no-param-reassign
           boards.stickies = this.stickies;
@@ -96,17 +96,18 @@ export default defineComponent({
         }
       });
       if (boardExists) {
-        return localStorage.setItem('boardData', JSON.stringify(savedData));
+        return localStorage.setItem('stickyBoardData', JSON.stringify(savedData));
       }
       savedData.push(data);
-      return localStorage.setItem('boardData', JSON.stringify(savedData));
+      return localStorage.setItem('stickyBoardData', JSON.stringify(savedData));
     },
 
     /**
      * @private
      */
-    deleteNote(id: unknown) {
-      const note = this.stickies.findIndex((sticky) => sticky.stickyId === id);
+    deleteNote(id: string) {
+      const note = this.stickies
+        .findIndex((sticky: { stickyId: string; }) => sticky.stickyId === id);
       this.stickies.splice(note, 1);
       this.saveStickies();
     },
@@ -114,7 +115,7 @@ export default defineComponent({
     /**
      * @private
      */
-    newBoard(board: unknown) {
+    newBoard(board: string) {
       this.selectedBoard = board;
       this.stickies = [];
       this.saveStickies();
@@ -123,7 +124,7 @@ export default defineComponent({
     /**
      * @private
      */
-    loadBoard(board: { stickies: string|unknown[]; board: unknown; }) {
+    loadBoard(board: { stickies: Array<Stickies>; board: string; }) {
       this.stickies = board.stickies;
       this.selectedBoard = board.board;
       this.count = board.stickies.length;

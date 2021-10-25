@@ -1,6 +1,6 @@
 <template>
-  <div class="boards">
-    <div class="newboard">
+  <div class="sticky-boards">
+    <div class="sticky-boards__newboard">
       <div class="input-group input-group-lg">
         <span class="input-group-text" id="inputGroup-sizing-lg">Large</span>
         <input
@@ -19,14 +19,11 @@
       v-bind:boards="boards"
       v-on:chooseBoard="chooseBoard"
       v-on:deleteBoard="deleteBoard"
-      v-on:archiveBoard="archiveBoard"
     ></BoardList>
   </div>
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import { ipcRenderer } from 'electron';
 import BoardList from './BoardList.vue';
@@ -56,7 +53,7 @@ export default defineComponent({
     /**
      * @private
      */
-    chooseBoard(board: unknown) {
+    chooseBoard(board: string) {
       this.$emit('chooseBoard', board);
     },
 
@@ -70,28 +67,20 @@ export default defineComponent({
     /**
      * @private
      */
-    deleteBoard(board: { board: unknown }) {
-      const boards = JSON.parse(localStorage.getItem('boardData'));
-      const filteredBoards = boards.filter((b: { board: unknown; }) => b.board !== board.board);
-      localStorage.setItem('boardData', JSON.stringify(filteredBoards));
+    deleteBoard(board: { board: string }) {
+      const boards = JSON.parse(localStorage.getItem('stickyBoardData'));
+      const filteredBoards = boards.filter((b: { board: string; }) => b.board !== board.board);
+      localStorage.setItem('stickyBoardData', JSON.stringify(filteredBoards));
       this.boards = filteredBoards;
-    },
-
-    /**
-     * @private
-     */
-    archiveBoard(board: unknown) {
-      localStorage.setItem('archives', JSON.stringify(board));
-      this.deleteBoard(board);
     },
   },
   mounted() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.boards = JSON.parse(localStorage.getItem('boardData'));
-    ipcRenderer.on('openBoard', (event: unknown, msg: unknown) => {
+    this.boards = JSON.parse(localStorage.getItem('stickyBoardData'));
+    ipcRenderer.on('openBoard', (event: Event, msg: string) => {
       // eslint-disable-next-line no-shadow
-      const board = this.boards.find((board: { board: unknown; }) => board.board === msg);
+      const board = this.boards.find((board: { board: string; }) => board.board === msg);
       this.chooseBoard(board);
     });
   },
@@ -108,23 +97,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.boards {
+.sticky-boards {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   padding: 20px;
 }
-.boardname {
-  font-size: 2em;
-  margin: 5px;
-  padding: 10px;
-  width: 100%;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-}
-.newboard {
+.sticky-boards__newboard {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -134,7 +114,7 @@ export default defineComponent({
   padding: 20px;
   background: #f7f7f7;
 }
-.newboard button {
+.sticky-boards__newboard button {
   margin-top: 20px;
 }
 </style>

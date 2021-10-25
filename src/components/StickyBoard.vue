@@ -12,9 +12,8 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { defineComponent } from 'vue';
+import { Stickies } from '../types/notes';
 import Column from './Column.vue';
 
 export default defineComponent({
@@ -32,13 +31,12 @@ export default defineComponent({
     /**
      * @private
      */
-    const sortStickies = (col: unknown) => {
-      const notes = [];
+    const sortStickies = (col: string) => {
+      // const notes = [];
+      const notes = [] as Array<Stickies>;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       stickies.forEach((sticky) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         if (col === sticky.column) {
           notes.push(sticky);
         }
@@ -56,7 +54,7 @@ export default defineComponent({
     /**
      * @private
      */
-    const transferSticky = (data: unknown, col: unknown) => {
+    const transferSticky = (data: string, col: string) => {
       emit('transfer', data, col);
     };
 

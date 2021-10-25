@@ -119,12 +119,12 @@ function openBoard(board: any) {
   }
 }
 
-ipcMain.on('boardList', (event: unknown, arg: any) => {
+ipcMain.on('boardList', (event: Event, arg: string) => {
   if (arg) {
     boards = arg;
     const trayLabels = contextMenu.items.map((item) => item.label);
     try {
-      const boardLabels = boards.map((board: { board: any }) => board.board);
+      const boardLabels = boards.map((board: { board: string }) => board.board);
       // need to remove boards from the list when a board gets deleted
       boardLabels.forEach((label: string) => {
         if (!trayLabels.includes(label)) {

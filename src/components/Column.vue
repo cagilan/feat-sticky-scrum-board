@@ -16,8 +16,6 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import { defineComponent } from 'vue';
 import StickyNote from './StickyNote.vue';
 
@@ -32,7 +30,7 @@ export default defineComponent({
     const { name } = props;
 
     const dropItem = (e: {
-      dataTransfer: { getData: (arg0: string) => unknown };
+      dataTransfer: { getData: (arg0: string) => string };
       target: { className: string; style: { background: string } };
     }) => {
       const data = e.dataTransfer.getData('sticky');
@@ -42,14 +40,14 @@ export default defineComponent({
       }
     };
 
-    const dragOn = (e: { target: unknown }) => {
+    const dragOn = (e: { target: HTMLDivElement }) => {
       const column = e.target;
       if (column.className === 'column') {
         column.style.background = 'lightgrey';
       }
     };
 
-    const deleteNote = (id: unknown) => {
+    const deleteNote = (id: string) => {
       emit('delete', id);
     };
 
@@ -82,25 +80,22 @@ export default defineComponent({
     min-height: 30%;
   }
 }
-/* width */
+
 .column::-webkit-scrollbar {
   width: 10px;
   display: block;
 }
 
-/* Track */
 .column::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 15px;
   display: none;
 }
 
-/* Handle */
 .column::-webkit-scrollbar-thumb {
   background: rgb(78, 119, 196);
 }
 
-/* Handle on hover */
 .column::-webkit-scrollbar-thumb:hover {
   background: #555;
   width: 15px;
