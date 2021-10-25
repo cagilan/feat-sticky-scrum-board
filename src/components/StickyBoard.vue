@@ -1,25 +1,25 @@
 <template>
   <div class="sticky-board">
-    <Column
+    <StickyColumn
       v-for="(column, index) in columns"
       :key="index"
       v-bind:name="column"
       v-bind:stickies="sortStickies(column)"
       v-on:delete="deleteNote"
       v-on:transfer="transferSticky"
-    ></Column>
+    ></StickyColumn>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Stickies } from '../types/notes';
-import Column from './Column.vue';
+import StickyColumn from './StickyColumn.vue';
 
 export default defineComponent({
   name: 'StickyBoard',
   components: {
-    Column,
+    StickyColumn,
   },
   props: {
     stickies: Array,

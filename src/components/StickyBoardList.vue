@@ -26,7 +26,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'BoardList',
+  name: 'StickyBoardList',
   props: ['boards'],
   setup(props, { emit }) {
     /**
@@ -42,18 +42,9 @@ export default defineComponent({
     const deleteBoard = (board: string) => {
       emit('deleteBoard', board);
     };
-
-    /**
-     * @private
-     */
-    const archiveBoard = (board: string) => {
-      emit('archiveBoard', board);
-    };
-
     return {
       openBoard,
       deleteBoard,
-      archiveBoard,
     };
   },
 });
