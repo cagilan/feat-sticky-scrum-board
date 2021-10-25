@@ -44,7 +44,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   props: ['stickies', 'columns'],
@@ -60,6 +62,7 @@ export default defineComponent({
         this.$emit('createSticky', this.taskHead, this.task);
         this.taskHead = '';
       } else {
+        // eslint-disable-next-line no-alert
         alert('Please enter a valid task header and task details...');
       }
 

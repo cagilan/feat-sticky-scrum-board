@@ -16,6 +16,8 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { defineComponent } from 'vue';
 import StickyNote from './StickyNote.vue';
 
@@ -26,38 +28,33 @@ export default defineComponent({
     stickies: Array,
   },
   setup(props, { emit }) {
+    // eslint-disable-next-line vue/no-setup-props-destructure
     const { name } = props;
 
     const dropItem = (e: {
-      dataTransfer: { getData: (arg0: string) => any };
+      dataTransfer: { getData: (arg0: string) => unknown };
       target: { className: string; style: { background: string } };
     }) => {
       const data = e.dataTransfer.getData('sticky');
-      if (e.target.className == 'column') {
+      if (e.target.className === 'column') {
         e.target.style.background = 'white';
         emit('transfer', data, name);
       }
     };
 
-    const dragOn = (e: { target: any }) => {
+    const dragOn = (e: { target: unknown }) => {
       const column = e.target;
-      if (column.className == 'column') {
+      if (column.className === 'column') {
         column.style.background = 'lightgrey';
       }
     };
 
-    const dragLeave = (e: { target: any }) => {
-      const column = e.target;
-      if (column.className == 'column') {
-        column.style.background = 'white';
-      }
-    };
-
-    const deleteNote = (id: any) => {
+    const deleteNote = (id: unknown) => {
       emit('delete', id);
     };
 
     return {
+      // eslint-disable-next-line vue/no-dupe-keys
       name,
       dropItem,
       dragOn,

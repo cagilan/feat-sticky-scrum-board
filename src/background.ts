@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import {
   app,
   protocol,
@@ -7,6 +9,7 @@ import {
   ipcMain,
   MenuItem,
 } from 'electron';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   createProtocol,
   installVueDevtools,
@@ -16,16 +19,20 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let win: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let iconPath: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let appIcon: any;
 let boards;
 
 if (process.platform === 'linux') {
+  // eslint-disable-next-line no-console
   console.log('it is linux');
-  iconPath = 'src/assets/gear_icon.png';
+  iconPath = 'src/assets/logo.png';
 } else {
-  iconPath = 'src/assets/gear_icon.png';
+  iconPath = 'src/assets/logo.png';
 }
 
 // Standard scheme must be registered before the app is ready
@@ -112,7 +119,7 @@ function openBoard(board: any) {
   }
 }
 
-ipcMain.on('boardList', (event: any, arg: any) => {
+ipcMain.on('boardList', (event: unknown, arg: any) => {
   if (arg) {
     boards = arg;
     const trayLabels = contextMenu.items.map((item) => item.label);
@@ -132,6 +139,7 @@ ipcMain.on('boardList', (event: any, arg: any) => {
         }
       });
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
     appIcon.setContextMenu(contextMenu);

@@ -25,17 +25,19 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { ipcRenderer } from "electron";
-import BoardList from "./BoardList.vue";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+import { defineComponent } from 'vue';
+import { ipcRenderer } from 'electron';
+import BoardList from './BoardList.vue';
 
 export default defineComponent({
-  name: "Boards",
+  name: 'Boards',
   components: { BoardList },
   data() {
     return {
       boardName: undefined,
-      boards: []
+      boards: [],
     };
   },
   methods: {
@@ -44,10 +46,10 @@ export default defineComponent({
      */
     newBoard() {
       if (this.boardName) {
-        this.$emit("newBoard", this.boardName);
+        this.$emit('newBoard', this.boardName);
       } else {
         // eslint-disable-next-line no-alert
-        alert("Please enter a valid board name");
+        alert('Please enter a valid board name');
       }
     },
 
@@ -55,23 +57,23 @@ export default defineComponent({
      * @private
      */
     chooseBoard(board: unknown) {
-      this.$emit("chooseBoard", board);
+      this.$emit('chooseBoard', board);
     },
 
     /**
      * @private
      */
     sendBoards() {
-      ipcRenderer.send("boardList", this.boards);
+      ipcRenderer.send('boardList', this.boards);
     },
 
     /**
      * @private
      */
     deleteBoard(board: { board: unknown }) {
-      const boards = JSON.parse(localStorage.getItem("boardData"));
-      const filteredBoards = boards.filter(b => b.board !== board.board);
-      localStorage.setItem("boardData", JSON.stringify(filteredBoards));
+      const boards = JSON.parse(localStorage.getItem('boardData'));
+      const filteredBoards = boards.filter((b: { board: unknown; }) => b.board !== board.board);
+      localStorage.setItem('boardData', JSON.stringify(filteredBoards));
       this.boards = filteredBoards;
     },
 
@@ -79,17 +81,17 @@ export default defineComponent({
      * @private
      */
     archiveBoard(board: unknown) {
-      localStorage.setItem("archives", JSON.stringify(board));
+      localStorage.setItem('archives', JSON.stringify(board));
       this.deleteBoard(board);
-    }
+    },
   },
   mounted() {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    this.boards = JSON.parse(localStorage.getItem("boardData"));
-    ipcRenderer.on("openBoard", (event: unknown, msg: unknown) => {
+    this.boards = JSON.parse(localStorage.getItem('boardData'));
+    ipcRenderer.on('openBoard', (event: unknown, msg: unknown) => {
       // eslint-disable-next-line no-shadow
-      const board = this.boards.find(board => board.board === msg);
+      const board = this.boards.find((board: { board: unknown; }) => board.board === msg);
       this.chooseBoard(board);
     });
   },
@@ -97,11 +99,11 @@ export default defineComponent({
     boards(oldBoards, newBoards) {
       if (oldBoards !== newBoards) {
         // eslint-disable-next-line no-console
-        console.log("sending boards");
+        console.log('sending boards');
         this.sendBoards();
       }
-    }
-  }
+    },
+  },
 });
 </script>
 

@@ -21,27 +21,32 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 export default {
   props: {
     note: Object,
   },
   methods: {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     startDrag(e: {
       dataTransfer: { setData: (arg0: string, arg1: string) => void };
     }) {
       e.dataTransfer.setData('sticky', JSON.stringify(this.note));
     },
-    deleteNote(id: any) {
+    deleteNote(id: unknown) {
       this.$emit('delete', id);
     },
   },
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   beforeMount() {
     let items = this.note.content;
     try {
       items = items.split('\n');
+      // eslint-disable-next-line vue/no-mutating-props
       this.note.content = items;
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(err);
     }
   },

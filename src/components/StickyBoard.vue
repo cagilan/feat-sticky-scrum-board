@@ -12,6 +12,8 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import { defineComponent } from 'vue';
 import Column from './Column.vue';
 
@@ -25,14 +27,17 @@ export default defineComponent({
     columns: Array,
   },
   setup(props, { emit }) {
+    // eslint-disable-next-line vue/no-setup-props-destructure
     const { stickies } = props;
     /**
      * @private
      */
-    const sortStickies = (col: any) => {
+    const sortStickies = (col: unknown) => {
       const notes = [];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       stickies.forEach((sticky) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (col === sticky.column) {
           notes.push(sticky);
@@ -51,7 +56,7 @@ export default defineComponent({
     /**
      * @private
      */
-    const transferSticky = (data: any, col: any) => {
+    const transferSticky = (data: unknown, col: unknown) => {
       emit('transfer', data, col);
     };
 

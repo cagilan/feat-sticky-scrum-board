@@ -23,11 +23,12 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import { defineComponent, ref } from 'vue';
-import InputHeader from './components/InputHeader.vue';
-import StickyBoard from './components/StickyBoard.vue';
-import Boards from './components/Boards.vue';
+import { defineComponent } from 'vue';
+import InputHeader from './InputHeader.vue';
+import StickyBoard from './StickyBoard.vue';
+import Boards from './Boards.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default defineComponent({
@@ -44,13 +45,14 @@ export default defineComponent({
     /**
      * @private
      */
-    createSticky(header: any, content: any) {
+    createSticky(header: unknown, content: unknown) {
       this.stickies.push({
         stickyId: `S${this.count + 1}`,
         header,
         content,
         column: 'To Do Items',
       });
+      // eslint-disable-next-line no-plusplus
       this.count++;
       this.saveStickies();
     },
@@ -60,7 +62,7 @@ export default defineComponent({
      */
     moveSticky(data, col) {
       const noteObj = JSON.parse(data);
-      const moveNote = this.stickies.find((s) => s.stickyId == noteObj.stickyId);
+      const moveNote = this.stickies.find((s) => s.stickyId === noteObj.stickyId);
       const newCol = col;
       moveNote.column = newCol;
       this.saveStickies();
@@ -71,6 +73,7 @@ export default defineComponent({
      */
     saveStickies() {
       if (!this.selectedBoard) {
+        // eslint-disable-next-line no-console
         return console.log('no board');
       }
       const board = this.selectedBoard;
@@ -84,8 +87,10 @@ export default defineComponent({
       }
       const savedData = JSON.parse(localStorage.getItem('boardData'));
       let boardExists = false;
+      // eslint-disable-next-line
       savedData.find((board) => {
-        if (board.board == this.selectedBoard) {
+        if (board.board === this.selectedBoard) {
+          // eslint-disable-next-line no-param-reassign
           board.stickies = this.stickies;
           boardExists = true;
         }
@@ -100,8 +105,8 @@ export default defineComponent({
     /**
      * @private
      */
-    deleteNote(id) {
-      const note = this.stickies.findIndex((sticky) => sticky.stickyId == id);
+    deleteNote(id: unknown) {
+      const note = this.stickies.findIndex((sticky) => sticky.stickyId === id);
       this.stickies.splice(note, 1);
       this.saveStickies();
     },
@@ -109,7 +114,7 @@ export default defineComponent({
     /**
      * @private
      */
-    newBoard(board) {
+    newBoard(board: unknown) {
       this.selectedBoard = board;
       this.stickies = [];
       this.saveStickies();
@@ -118,7 +123,7 @@ export default defineComponent({
     /**
      * @private
      */
-    loadBoard(board) {
+    loadBoard(board: { stickies: string|unknown[]; board: unknown; }) {
       this.stickies = board.stickies;
       this.selectedBoard = board.board;
       this.count = board.stickies.length;
