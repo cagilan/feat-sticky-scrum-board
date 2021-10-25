@@ -15,22 +15,22 @@
         Create new scrum board
       </button>
     </div>
-    <BoardList
+    <StickyBoardList
       v-bind:boards="boards"
       v-on:chooseBoard="chooseBoard"
       v-on:deleteBoard="deleteBoard"
-    ></BoardList>
+    ></StickyBoardList>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { ipcRenderer } from 'electron';
-import BoardList from './BoardList.vue';
+import StickyBoardList from './StickyBoardList.vue';
 
 export default defineComponent({
-  name: 'Boards',
-  components: { BoardList },
+  name: 'StickyBoards',
+  components: { StickyBoardList },
   data() {
     return {
       boardName: undefined,

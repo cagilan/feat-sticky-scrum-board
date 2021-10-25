@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <Boards
+    <StickyBoards
       v-if="!selectedBoard"
       v-on:newBoard="newBoard"
       v-on:chooseBoard="loadBoard"
-    ></Boards>
-    <InputHeader
+    ></StickyBoards>
+    <StickyHeader
       v-if="selectedBoard"
       v-on:createSticky="createSticky"
       v-bind:stickies="stickies"
       v-bind:columns="columns"
       v-on:backToBoards="backToBoards"
-    ></InputHeader>
+    ></StickyHeader>
     <StickyBoard
       v-if="selectedBoard"
       v-bind:stickies="stickies"
@@ -24,14 +24,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import InputHeader from './components/InputHeader.vue';
+import StickyHeader from './components/StickyHeader.vue';
 import StickyBoard from './components/StickyBoard.vue';
-import Boards from './components/Boards.vue';
+import StickyBoards from './components/StickyBoards.vue';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Stickies } from './types/notes';
 
 export default defineComponent({
-  components: { InputHeader, StickyBoard, Boards },
+  components: { StickyHeader, StickyBoard, StickyBoards },
   data() {
     return {
       stickies: [],

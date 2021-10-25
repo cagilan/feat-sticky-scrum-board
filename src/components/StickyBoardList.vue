@@ -26,7 +26,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'BoardList',
+  name: 'StickyBoardList',
   props: ['boards'],
   setup(props, { emit }) {
     /**
